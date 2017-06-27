@@ -19,7 +19,7 @@ public class Car1 : MonoBehaviour {
 		dx = r;
 		max_speed = r;
 
-		int rr = (int)Random.Range (0,5);
+		int rr = (int)Random.Range (0,4);
 		if (rr == 0) {
 			type = 0;
 			this.transform.position = new Vector3 (0, 0, 0.0f);
@@ -51,10 +51,9 @@ public class Car1 : MonoBehaviour {
 		int flag = 0;
 		foreach (GameObject obs in cars) {
 			float tx = obs.transform.position.x;
-			if (tx > mx && tx - mx < 10 && 
+			if (tx > mx && tx - mx < 11 && 
 				(obs.transform.position.z - this.transform.position.z)*(obs.transform.position.z - this.transform.position.z) < 6.25f) {
 				flag = 1;
-				near = 1;
 				break;
 			}
 		}
@@ -65,7 +64,7 @@ public class Car1 : MonoBehaviour {
 		}
 
 		//合流
-		flag = 0;
+		int flag1 = 0;
 		near = 0;
 		if (type == 2) {
 			foreach (GameObject obs in cars) {
@@ -73,7 +72,7 @@ public class Car1 : MonoBehaviour {
 				float tx = obs.transform.position.x;
 				if (c.type == 1) {
 					if ((mx - tx) * (mx - tx) < 160) {
-						flag = 1;
+						flag1 = 1;
 						break;
 					}
 				}
@@ -84,15 +83,15 @@ public class Car1 : MonoBehaviour {
 				}
 			}
 			//運転技術が高い車は，車線変更できるように減速する
-			if(flag == 1 && mx > 100.0f){
+			if(flag1 == 1 && mx > 100.0f && flag == 0){
 				dx = 0.4f;
 			}
 			//車線変更可能なとき
 			//マナーの悪い車は，前の車がいても車線変更をする
-			if (flag == 0 && mx > 100.0f && (near == 0 || skill == 2)) {
+			if (flag1 == 0 && mx > 100.0f && (near == 0 || skill == 2)) {
 				type = 1;
 				henkou = 1;
-				cnt = 10;
+				cnt = 20;
 			}
 			//限界まで来たら停止する
 			if (this.transform.position.x > 140) {
@@ -102,7 +101,7 @@ public class Car1 : MonoBehaviour {
 
 		//車線変更処理
 		if (henkou == 1) {
-			this.transform.position -= new Vector3 (0.0f, 0.0f, 0.5f);
+			this.transform.position -= new Vector3 (0.0f, 0.0f, 0.25f);
 			cnt--;
 			if (cnt < 0) {
 				henkou = 0;

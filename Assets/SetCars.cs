@@ -12,7 +12,7 @@ public class SetCars : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		int r = (int)Random.Range (0,100);
-		if(r < 5){
+		if(r < 8){
 			Instantiate (obj);
 		}
 	}
